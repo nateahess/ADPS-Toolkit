@@ -38,7 +38,7 @@ Clear-Host
 $groupNames = @("Domain Admins")
 
 #Initialize an array to hold results 
-$adminsTable = @()
+$data = @()
 
 #Loop through groups and get members 
 foreach ($groupName in $groupNames) {
@@ -56,14 +56,14 @@ foreach ($groupName in $groupNames) {
             $user | Add-Member -Force -MemberType NoteProperty -Name MemberType -Value "User" 
 
             #Add the user to the results table 
-            $adminsTable += $user 
+            $data += $user 
         }
     }
 }
 
 
 # Select desired properties and export to CSV 
-$userTable = $adminsTable | Select-Object Name, SamAccountName, GroupName, MemberType, Enabled 
+$userTable = $data | Select-Object Name, SamAccountName, GroupName, MemberType, Enabled 
 $userTable | Export-Csv -Path "$PSScriptRoot\..\ADAudit\GroupMembers\GroupMemberships-Users.csv" -NoTypeInformation 
 
 
