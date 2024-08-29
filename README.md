@@ -1,5 +1,5 @@
-# ADPS Toolkit 
+![header-image](https://github.com/nateahess/ADPS-Toolkit/blob/main/Resources/Header-image2.PNG)
 
-### Description
+# Active Directory PowerShell Auditing and Automation 
 
-A collection of PowerShell scripts for active directory auditing and automation 
+> A simple set of PowerShell scripts to assist with Active Directory auditing, automations, Identity and Access Management, and more. 
