@@ -7,6 +7,9 @@ AUTHOR: nateahess
 DESCRIPTION: Script to list nested groups from a specific group or set of groups  
              Note - This script will only show nested groups. To view all MemberTypes see AD-GroupMembershipAll.ps1 
 
+
+TO USE: Add or change groups in the $groupNames variable that you wish yo get members for. 
+
 VERSION NOTES 
 
 > 1.0 | Initial Script creation and testing 

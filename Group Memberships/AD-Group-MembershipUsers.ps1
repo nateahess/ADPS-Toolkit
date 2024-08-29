@@ -7,6 +7,9 @@ AUTHOR: nateahess
 DESCRIPTION: Script to list enabled users in a specified group or groups and export them to a CSV file. 
              Note - This script will not show nested groups. To view all MemberTypes see AD-GroupMembershipAll.ps1 
 
+
+TO USE: Add or change groups in the $groupNames variable that you wish yo get members for. 
+
 VERSION NOTES 
 
 > 1.0 | Initial Script creation and testing 

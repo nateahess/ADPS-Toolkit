@@ -6,9 +6,12 @@ DATE: 8.28.2024
 AUTHOR: nateahess 
 DESCRIPTION: Script to list all members of a group (enabled users, disabled users, and nested groups included) 
 
+TO USE: Add or change groups in the $groupNames variable that you wish yo get members for. 
+
 VERSION NOTES 
 
 > 1.0 | Initial Script creation and testing 
+> 1.1 | Switched to objects for holding member data so the output is cleaner
 
 #> 
 
@@ -46,45 +49,56 @@ $data = @()
 #Loop through groups and get user members 
 foreach ($groupName in $groupNames) {
 
-    #Get the group members, filtering only users 
-    $userMembers = Get-ADGroupMember -Identity $groupName -Recursive | Where-Object {$_.objectClass -eq 'user'}
+    $groupMembers = Get-ADGroupMember -Identity $groupNames
 
-    foreach ($member in $userMembers) 
-        #Get detailed information about each member 
-        $user = Get-ADUser -Identity $member.SamAccountName -Properties Enabled 
+    #Loop through groups and get user members 
 
-        #Filter only enabled accounts
-        if ($user.Enabled) {
-            #Add additional properties for exporting 
-            $user | Add-Member -Force -MemberType NoteProperty -Name GroupName -Value $groupnName 
-            $user | Add-Member -Force -MemberType NoteProperty -Name MemberType -Value "User" 
+    foreach ($member in $groupMembers) { 
+
+        if ($member.objectClass -eq 'user') {
+
+                #Get information on each user 
+                $user = Get-ADUser -Identity $member.SamAccountName 
+
+                #Filter only enabled accounts 
+                if ($user.Enabled) { 
+
+                    #Create a custom object with additional properties 
+                    $userObject = [PSCustomObject]@{
+                        Name           = $user.name 
+                        SamAccountName = $user.SamAccountName
+                        GroupName      = $Groupname 
+                        MemberType     = "User"
+                        Enabled        = $user.Enabled 
+                    }
+
+                    #Add the user to the results table 
+                    $data += $userObject 
+                } 
+
+        } elseif ($member.objectClass -eq 'group') { 
+
+            $group = Get-ADObject -Identity $member.distinguishedName 
+
+            #Create a custom object with additional properites 
+            $groupObject = [PSCustomObject]@{
+                Name            = $group.name 
+                SamAccountName  = "N/A"
+                GroupName       = $GroupName      
+                MemberType      = "Group"
+                Enabled         = "N/A"
+            }
 
             #Add the user to the results table 
-            $data += $user 
-        }
+            $data += $groupObject
+
+       }
     }
 }
+ 
 
-
-#Loop through groups and get group members 
-foreach ($groupName in $groupNames) {
-    #Get the group members, filtering only groups 
-    $groupMembers = Get-ADGroupMember -Identity $groupName -Recursive | Where-Object {$_.objectClass -eq 'group'}
-
-    foreach ($member in $groupMembers) {
-        #get group info 
-        $nestedGroup = Get-ADGroup $member 
-
-        #Add the group to our data array 
-        $data += $nestedGroup   
-
-    } 
-}
-
-
-# Select desired properties and export to CSV 
-$userTable = $data | Select-Object Name, ObjectClass, GroupCategory, SamAccountName, GroupName, MemberType, Enabled 
+#Select desired properites and export to CSV 
+$userTable = $data | Select-Object Name, SamAccountName, GroupName, MemberType, Enabled 
 $userTable | Export-Csv -Path "$PSScriptRoot\..\GroupMemberships-All.csv" -NoTypeInformation 
-
 
 
