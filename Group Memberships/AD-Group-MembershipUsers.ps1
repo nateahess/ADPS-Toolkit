@@ -64,7 +64,7 @@ foreach ($groupName in $groupNames) {
 
 # Select desired properties and export to CSV 
 $userTable = $data | Select-Object Name, SamAccountName, GroupName, MemberType, Enabled 
-$userTable | Export-Csv -Path "$PSScriptRoot\..\ADAudit\GroupMembers\GroupMemberships-Users.csv" -NoTypeInformation 
+$userTable | Export-Csv -Path "$PSScriptRoot\..\GroupMemberships-Users.csv" -NoTypeInformation 
 
 
 

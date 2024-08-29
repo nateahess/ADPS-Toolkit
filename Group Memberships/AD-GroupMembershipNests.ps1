@@ -58,7 +58,7 @@ foreach ($groupName in $groupNames) {
 
 # Select desired properties and export to CSV 
 $groupTable = $data | Select-Object Name, ObjectClass, GroupCategory 
-$groupTable | Export-Csv -Path "$PSScriptRoot\..\ADAudit\GroupMembers\GroupMemberships-Nested.csv" -NoTypeInformation 
+$groupTable | Export-Csv -Path "$PSScriptRoot\..\GroupMemberships-Nested.csv" -NoTypeInformation 
 
 
 
