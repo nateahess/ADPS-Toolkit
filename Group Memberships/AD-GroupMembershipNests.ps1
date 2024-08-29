@@ -4,7 +4,7 @@ TITLE: AD-GroupMembershipNests.ps1
 VERSION: 1.0 
 DATE: 8.28.2024
 AUTHOR: nateahess 
-DESCRIPTION: Script to list enabled users in a specified group or groups and export them to a CSV file. 
+DESCRIPTION: Script to list nested groups from a specific group or set of groups  
              Note - This script will only show nested groups. To view all MemberTypes see AD-GroupMembershipAll.ps1 
 
 VERSION NOTES 
