@@ -16,7 +16,7 @@ VERSION NOTES
 Write-Host "Loading Active Directory Module." 
 $admodule = Get-Module -ListAvailable | Where-Object {$_.Name -eq "ActiveDirectory"}
 
-if {$admodule -eq $null} {
+if ($admodule -eq $null) {
 
     try {
 
@@ -45,8 +45,9 @@ $data = @()
 
 #Loop through groups and get user members 
 foreach ($groupName in $groupNames) {
-    #Get the group members, filtering only users users 
-    $userMember = Get-ADGroupMember -Identity $groupName -Recursive | Where-Object {$_.objectClass -eq 'user'}
+
+    #Get the group members, filtering only users 
+    $userMembers = Get-ADGroupMember -Identity $groupName -Recursive | Where-Object {$_.objectClass -eq 'user'}
 
     foreach ($member in $userMembers) 
         #Get detailed information about each member 
