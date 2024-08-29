@@ -1,5 +1,5 @@
-# Active Directory Auditing Scripts 
+# ADPS Toolkit 
 
 ### Description
 
-A collection of PowerShell scripts to help pull data out of Active Directory. 
+A collection of PowerShell scripts for active directory auditing and automation 
