@@ -6,8 +6,6 @@ DATE: 8.28.2024
 AUTHOR: nateahess 
 DESCRIPTION: Script to list all members of a group (enabled users, disabled users, and nested groups included) 
 
-TO USE: Add or change groups in the $groupNames variable that you wish yo get members for. 
-
 VERSION NOTES 
 
 > 1.0 | Initial Script creation and testing 
@@ -70,7 +68,7 @@ foreach ($groupName in $groupNames) {
         Write-Host ".....Retrieving data from $groupName" 
         $groupMembers = Get-ADGroupMember -Identity $groupName 
 
-    } cath { 
+    } catch { 
 
         Write-Host ".....Retreiving data from $groupName"
         $groupMembers = Get-ADGroupMember -Identity $groupName 
