@@ -48,7 +48,9 @@ Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope LocalMachine
 $date = (Get-Date).ToString("yyyMMdd")
 
 #Set group name(s) that you want to retrieve members for 
-$groupNames = @("Domain Admins")
+Write-Host "Please enter the group or groups you would like to retreive members for. (If more than one group, separate by comma)." 
+$userInput = Read-Host "> "
+$groupNames = $userInput -split ","
 
 #Get iput and set variable for file name 
 $filename = Read-Host "Please enter a name for the report (date is added automatically): "
@@ -63,10 +65,21 @@ Write-Host "............................"
 #Loop through groups and get user members 
 foreach ($groupName in $groupNames) {
 
+    try { 
+
+        Write-Host ".....Retrieving data from $groupName" 
+        $groupMembers = Get-ADGroupMember -Identity $groupName 
+
+    } cath { 
+
+        Write-Host ".....Retreiving data from $groupName"
+        $groupMembers = Get-ADGroupMember -Identity $groupName 
+
+    }
+
     $groupMembers = Get-ADGroupMember -Identity $groupNames
 
     #Loop through groups and get user members 
-
     foreach ($member in $groupMembers) { 
 
         if ($member.objectClass -eq 'user') {
