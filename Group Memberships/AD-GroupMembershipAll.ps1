@@ -36,12 +36,19 @@ if ($admodule -eq $null) {
 
 }
 
+
 Import-Module ActiveDirectory 
 
 Clear-Host 
 
+#Get current date for the filename 
+$date = (Get-Date).ToString("yyyMMdd")
+
 #Set group name(s) that you want to retrieve members for 
 $groupNames = @("Domain Admins")
+
+#Set variable for the filename 
+$filename = "Domain-Admins"
 
 #Initialize an array to hold results 
 $data = @()
@@ -58,7 +65,7 @@ foreach ($groupName in $groupNames) {
         if ($member.objectClass -eq 'user') {
 
                 #Get information on each user 
-                $user = Get-ADUser -Identity $member.SamAccountName 
+                $user = Get-ADUser -Identity $member.SamAccountName -Properties Name, SamAccountName, Enabled, Title, Department, Manager, Description
 
                 #Filter only enabled accounts 
                 if ($user.Enabled) { 
@@ -70,6 +77,10 @@ foreach ($groupName in $groupNames) {
                         GroupName      = $Groupname 
                         MemberType     = "User"
                         Enabled        = $user.Enabled 
+                        Title          = $user.title
+                        Department     = $useer.department 
+                        Manager        = $user.manager 
+                        Description    = $user.description 
                     }
 
                     #Add the user to the results table 
@@ -87,6 +98,10 @@ foreach ($groupName in $groupNames) {
                 GroupName       = $GroupName      
                 MemberType      = "Group"
                 Enabled         = "N/A"
+                Title           = "N/A"
+                Department      = "N/A"
+                Manager         = "N/A"
+                Description     = $group.description 
             }
 
             #Add the user to the results table 
@@ -98,7 +113,7 @@ foreach ($groupName in $groupNames) {
  
 
 #Select desired properites and export to CSV 
-$userTable = $data | Select-Object Name, SamAccountName, GroupName, MemberType, Enabled 
-$userTable | Export-Csv -Path "$PSScriptRoot\..\GroupMemberships-All.csv" -NoTypeInformation 
+$userTable = $data | Select-Object Name, SamAccountName, GroupName, MemberType, Enabled, Title, Department, Manager, Description 
+$userTable | Export-Csv -Path "$PSScriptRoot\$filename-$date.csv" -NoTypeInformation 
 
 
