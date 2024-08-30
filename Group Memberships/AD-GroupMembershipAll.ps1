@@ -41,17 +41,24 @@ Import-Module ActiveDirectory
 
 Clear-Host 
 
+#Change execution policy 
+Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope LocalMachine 
+
 #Get current date for the filename 
 $date = (Get-Date).ToString("yyyMMdd")
 
 #Set group name(s) that you want to retrieve members for 
 $groupNames = @("Domain Admins")
 
-#Set variable for the filename 
-$filename = "Domain-Admins"
+#Get iput and set variable for file name 
+$filename = Read-Host "Please enter a name for the report (date is added automatically): "
 
 #Initialize an array to hold results 
 $data = @()
+
+Write-Host " " 
+Write-Host "Looping through the group(s) $groupNames to retreive member information" 
+Write-Host "............................"
 
 #Loop through groups and get user members 
 foreach ($groupName in $groupNames) {
@@ -107,6 +114,11 @@ foreach ($groupName in $groupNames) {
             #Add the user to the results table 
             $data += $groupObject
 
+       } else { 
+
+            Write-Host "$member is not of the object class 'user' or 'group'" 
+            Write-Host "Skipping to the next user" 
+
        }
     }
 }
@@ -116,4 +128,7 @@ foreach ($groupName in $groupNames) {
 $userTable = $data | Select-Object Name, SamAccountName, GroupName, MemberType, Enabled, Title, Department, Manager, Description 
 $userTable | Export-Csv -Path "$PSScriptRoot\$filename-$date.csv" -NoTypeInformation 
 
+Write-Host "Complete" 
+Write-Host "Report can be found at $PSScriptRoot\$filename-$date.csv" 
 
+pause 
