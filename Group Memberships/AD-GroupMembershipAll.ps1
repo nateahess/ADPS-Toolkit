@@ -1,10 +1,10 @@
 <#
 
 TITLE: AD-GroupMembershipAll.ps1 
-VERSION: 1.0 
-DATE: 8.28.2024
+VERSION: 1.1
+DATE: 9.3.2024
 AUTHOR: nateahess 
-DESCRIPTION: Script to list all members of a group (enabled users, disabled users, and nested groups included) 
+DESCRIPTION: Script to list all members of a group (enabled users and nested groups included) 
 
 VERSION NOTES 
 
@@ -39,9 +39,6 @@ Import-Module ActiveDirectory
 
 Clear-Host 
 
-#Change execution policy 
-Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope LocalMachine 
-
 #Get current date for the filename 
 $date = (Get-Date).ToString("yyyMMdd")
 
@@ -70,7 +67,7 @@ foreach ($groupName in $groupNames) {
 
     } catch { 
 
-        Write-Host ".....Retreiving data from $groupName"
+        Write-Host ".....Retrieving data from $groupName"
         $groupMembers = Get-ADGroupMember -Identity $groupName 
 
     }
