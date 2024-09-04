@@ -1,7 +1,7 @@
 <#
 
 TITLE: AD-StaleAccountsAudit.ps1
-VERSION: 1.1
+VERSION: 1.0
 AUTHOR: nateahess
 DATE: 9.4.2024
 DESCRIPTION: Script to locate stale accounts (Based on LastLogonTimeStamp) 
