@@ -1,7 +1,7 @@
 <#
 
 TITLE: AD-GroupMembershipNests.ps1 
-VERSION: 1.0 
+VERSION: 1.1
 DATE: 8.28.2024
 AUTHOR: nateahess 
 DESCRIPTION: Script to list nested groups from a specific group or set of groups  
