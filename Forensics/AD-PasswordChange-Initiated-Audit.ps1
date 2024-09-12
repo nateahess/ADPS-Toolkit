@@ -11,7 +11,7 @@ VERSION NOTES
 > 1.0 | Initial script creation and testing 
 
 #> 
-
+ 
 #Check for ActiveDirectory Module 
 Write-Host "Loading Active Directory Module." 
 $admodule = Get-Module -ListAvailable | Where-Object {$_.Name -eq "ActiveDirectory"}
