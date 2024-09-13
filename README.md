@@ -17,6 +17,8 @@
 * ### Stale Accounts
 
     - **AD-StaleAccountsAudit** - Locates stale accounts in AD by looking for PasswordLastChanged and LastLogonTimestamp
+    - **AD-StaleAccountsAudit2** - Locates stale accounts in AD by using the Search-ADUser -AccountInactive command 
+    - **AD-ExpiredPasswordsAudit** - Provides a list of users with expired passwords 
 
 
 * ### Group Memberships
