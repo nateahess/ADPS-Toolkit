@@ -37,6 +37,11 @@
     - **AD-GetOUMembersALL** - Provies a list of members for a specific OU 
 
 
+* ### Entra 
+
+    - **ENTRA-GetUserLicenses** - Provides a list of users and their assigned licenses from Entra 
+
+
 * ### Other
 
     - **AD-AddMobilePhone** - Fill out mobile phone information for a list of users (must have a CSV with the required information) 
