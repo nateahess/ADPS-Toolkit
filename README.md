@@ -40,6 +40,7 @@
 * ### Entra 
 
     - **ENTRA-GetUserLicenses** - Provides a list of users and their assigned licenses from Entra 
+    
     - **Entra-GetUserProxyAddresses** - Shows all proxy addresses for a specific user 
 
 
