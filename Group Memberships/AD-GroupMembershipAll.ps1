@@ -80,7 +80,7 @@ foreach ($groupName in $groupNames) {
         if ($member.objectClass -eq 'user') {
 
                 #Get information on each user 
-                $user = Get-ADUser -Identity $member.SamAccountName -Properties Name, SamAccountName, Enabled, Title, Department, Manager, Description
+                $user = Get-ADUser -Identity $member.SamAccountName -Properties Name, SamAccountName, Enabled, PasswordExpired, PasswordLastSet, Title, Department, Manager, Description
 
                 #Filter only enabled accounts 
                 if ($user.Enabled) { 
@@ -96,6 +96,9 @@ foreach ($groupName in $groupNames) {
                         Department     = $useer.department 
                         Manager        = $user.manager 
                         Description    = $user.description 
+                        Expired        = $user.PasswordExpired
+                        LastSet        = $user.PasswordLastSet
+
                     }
 
                     #Add the user to the results table 
@@ -133,7 +136,7 @@ foreach ($groupName in $groupNames) {
  
 
 #Select desired properites and export to CSV 
-$userTable = $data | Select-Object Name, SamAccountName, GroupName, MemberType, Enabled, Title, Department, Manager, Description 
+$userTable = $data | Select-Object Name, SamAccountName, GroupName, MemberType, Enabled, Expired, LastSet, Title, Department, Manager, Description 
 $userTable | Export-Csv -Path "$PSScriptRoot\$filename-$date.csv" -NoTypeInformation 
 
 Write-Host "Complete" 
