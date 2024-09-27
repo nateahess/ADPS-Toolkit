@@ -49,7 +49,9 @@ $filename = Read-Host "> "
 Write-Host "....Looking for accounts where PasswordNotRequired is set to True"
 
 #Get list of accounts from AD 
-Get-ADUser -Filter {PasswordNotRequired -eq $true} -Properties PasswordNotRequired | Select-Object Name, SamAccountName, Enabled, PasswordExpired, PasswordLastSet, Title, Department, Manager, Description | Select-Object
+Get-ADUser -Filter {PasswordNotRequired -eq $true} -Properties Name, PasswordNotRequired, SamAccountName, Enabled, PasswordExpired, PasswordLastSet, Title, Department, Manager, Description  | 
+
+Select-Object Name, PasswordNotRequired, SamAccountName, Enabled, PasswordExpired, PasswordLastSet, Title, Department, Manager, Description 
 
 Export-Csv -Path "$PSScriptRoot\$filename-$date.csv" -NoTypeInformation 
 
