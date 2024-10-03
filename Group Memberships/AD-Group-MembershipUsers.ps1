@@ -44,7 +44,7 @@ Clear-Host
 Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope LocalMachine 
 
 #Get current date for the filename 
-$date = (Get-Date).ToString("yyyMMdd")
+$date = (Get-Date).ToString("yyyyMMdd")
 
 #Set group name(s) that you want to retrieve members for 
 Write-Host "Please enter the group or groups you would like to retreive members for. (If more than one group, separate by comma)." 
