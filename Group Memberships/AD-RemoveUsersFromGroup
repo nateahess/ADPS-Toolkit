@@ -1,0 +1,122 @@
+<#
+
+TITLE: AD-RemoveUsersFromGroup.ps1
+VERSION: 1.0
+AUTHOR: nateahess
+DATE: 9.4.2024
+DESCRIPTION: Script to locate accounts that do not require a password 
+
+
+VERSION NOTES: 
+
+1.0 | Initial script creation and testing. 
+
+#> 
+
+#Check for ActiveDirectory Module 
+Write-Host "Loading Active Directory Module." 
+$admodule = Get-Module -ListAvailable | Where-Object {$_.Name -eq "ActiveDirectory"}
+
+if ($admodule -eq $null) {
+
+    try {
+
+        Install-Module -Name ActiveDirectory
+
+    } catch {
+
+        $errmsg = $_.ErrorMessage
+        Write-Error "ActiveDirectory module is required for this script."
+        Write-Error "Please run PowerShell as Administrator and execute: Install-Module -Name ActiveDirectory then try again."
+        Write-Error $errmsg 
+        return 
+    }
+
+}
+
+
+Import-Module ActiveDirectory 
+
+Clear-Host 
+
+############### DEFINE FUNCTIONS #################
+
+#Define function to browse and load a CSV file 
+Function Browse-FileName($initialDirectory) { 
+
+    [System.Reflection.Assembly]::LoadWithPartialName("System.windows.forms") | Out-Null
+
+    $OpenFileDialog = New-Object System.Windows.Forms.OpenFileDialog
+    $OpenFileDialog.initialDirectory = $initialDirectory
+    $OpenFileDiaglog.Title "....Select CSV file to process."
+    $OpenFileDialog.filter = "CSV (*.csv)| *.csv"
+    $rc = $OpenFileDialog.ShowDialog()
+
+    if($rc -eq [System.Windows.Forms.DialogResult]::OK){
+        #$OpenFileDialog.filename
+
+        $filenamepath = $OpenFileDialog.filename 
+        return $filenamepath 
+
+    } else { 
+
+        return $null 
+    }
+
+}
+
+################# MAIN SCRIPT ###################
+
+
+#Use Browse-Filename function to get the CSV file. 
+$usersCSV = Browse-FileName("$PSScriptRoot\..")
+$users = Import-Csv $usersCSV
+
+#Define group to remove users from 
+Write-Host "What group would you like to remove these users from?" 
+$groupName = Read-Host "> " 
+
+#Iterate through each user in the CSV file 
+foreach ($user in $users) { 
+
+    $SamAccountName = $user.SamAccountName 
+
+    #Attempt to find user in Active Directory 
+    try { 
+
+        $adUser = Get-ADUser -Filter {SamAccountName -eq $SamAccountName} -ErrorAction SilentlyContinue 
+
+        #Remove the user from the group if found 
+        try { 
+
+            Remove-ADGroupMember -Identity $groupName -Members $adUser -Confirm:$false 
+            Write-Host "....Removed $SamAccountName from $groupName." 
+
+
+        } catch { 
+
+            Write-Host "....Failed to remove $SamAccountName from $groupName" 
+
+        }
+
+    } catch { 
+
+        #If user was not found in AD 
+        Write-Host "....User with SamAccountName $samAccountName was not found in Active Directory" 
+
+
+    }
+
+
+}
+
+Write-Host "....Complete" 
+
+pause 
+
+
+
+
+
+
+

@@ -26,6 +26,11 @@
    - **AD-PasswordChange-Initiated-Audit** - Checks the last password change attempts for a user and displays the admin that initiated the change. 
 
 
+* ### Incident Response 
+
+    - **AD-BulkDisable.ps1** - Takes a list of users from a CSV and disables them 
+
+
 * ### Group Memberships
 
     - **AD-GroupMembers-All** - Provides a list of members for a specific group (includes all members)
