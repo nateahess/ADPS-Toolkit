@@ -40,3 +40,61 @@ Import-Module ActiveDirectory
 
 Clear-Host 
 
+############### DEFINE FUNCTIONS #################
+
+#Define function to browse and load a CSV file 
+Function Browse-FileName($initialDirectory) { 
+
+    [System.Reflection.Assembly]::LoadWithPartialName("System.windows.forms") | Out-Null
+
+    $OpenFileDialog = New-Object System.Windows.Forms.OpenFileDialog
+    $OpenFileDialog.initialDirectory = $initialDirectory
+    $OpenFileDiaglog.Title "....Select CSV file to process."
+    $OpenFileDialog.filter = "CSV (*.csv)| *.csv"
+    $rc = $OpenFileDialog.ShowDialog()
+
+    if($rc -eq [System.Windows.Forms.DialogResult]::OK){
+        #$OpenFileDialog.filename
+
+        $filenamepath = $OpenFileDialog.filename 
+        return $filenamepath 
+
+    } else { 
+
+        return $null 
+    }
+
+}
+
+############### MAIN SCRIPT #################
+
+#Use Browse-Filename Function to get the CSV file 
+$usersCSV = Browse-Filename("$PSScriptRoot\..")
+$users = Import-Csv $usersCSV 
+
+foreach ($user in $users) { 
+
+    $SamAccountName = $user.SamAccountName
+
+    try { 
+
+        $adUser = Get-ADUser -Identity $SamAccountName 
+
+        try { 
+
+            Disable-ADAccount -Identity $adUser 
+            Write-Host "....$adUser Disabled" -ForegroundColor Green 
+
+        } catch { 
+
+            Write-Host "....Error: Could not disable user $adUser" -ForegroundColor Red 
+
+        }
+
+    }
+
+}
+
+Write-Host ".....Complete" 
+
+pause 
