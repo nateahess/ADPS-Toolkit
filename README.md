@@ -20,6 +20,21 @@
 
     - **AD-ExpiredPasswordsAudit** - Provides a list of users with expired passwords 
 
+    #### $${\color{darkblue}Group Memberships}$$ 
+
+    - **AD-GroupMembers-All** - Provides a list of members for a specific group (includes all members)
+
+    - **AD-GroupMembers-Users** - Provides a list of members for a specific group (users only)
+
+    - **AD-GroupMembers-Nested** - Provides a list of members for a specifi group (nested groups only)
+
+    - **AD-RemoveUserGroupMemberships** - Takes a list of users and removes their group memberships. Great for quick permissions cleanup on disabled users. 
+
+
+    #### $${\color{darkblue} OU Memberships}$$
+
+    - **AD-GetOUMembersALL** - Provies a list of members for a specific OU 
+
 
 * ## $${\color{lightblue}Forensics}$$
 
@@ -31,22 +46,7 @@
     - **AD-BulkDisable.ps1** - Takes a list of users from a CSV and disables them 
 
     - **AD-BulkPasswordReset.ps1** - Takes a list of users from a CSV and changes their passwords (randomly generates a 10 character password for each)
-
-
-* ## $${\color{lightblue}Group Memberships}$$
-
-    - **AD-GroupMembers-All** - Provides a list of members for a specific group (includes all members)
-
-    - **AD-GroupMembers-Users** - Provides a list of members for a specific group (users only)
-
-    - **AD-GroupMembers-Nested** - Provides a list of members for a specifi group (nested groups only)
-
-    - **AD-RemoveUserGroupMemberships** - Takes a list of users and removes their group memberships. Great for quick permissions cleanup on disabled users. 
-
-* ## $${\color{lightblue}OU Memberships}$$
-
-    - **AD-GetOUMembersALL** - Provies a list of members for a specific OU 
-
+   
 
 * ## $${\color{lightblue}Entra}$$
 
