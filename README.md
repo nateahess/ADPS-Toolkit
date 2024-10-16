@@ -12,7 +12,7 @@
 
 * ### Audit 
 
-    - **AD-PasswordNotRequiredAudit** - Finds user accounts that do not require a password to sign in 
+    - **$${\color{lightblue}AD-StaleAccountsAudit}$$** - Finds user accounts that do not require a password to sign in 
 
     - **AD-StaleAccountsAudit** - Locates stale accounts in AD by looking for PasswordLastChanged and LastLogonTimestamp
 
