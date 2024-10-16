@@ -10,9 +10,9 @@
 ### Scripts in this toolkit (Will be updated as new scripts are added)
 
 
-* ### Audit 
+* ### {\color{lightblue}Audit}
 
-    - **$${\color{lightblue}AD-StaleAccountsAudit}$$** - Finds user accounts that do not require a password to sign in 
+    - **AD-StaleAccountsAudit** - Finds user accounts that do not require a password to sign in 
 
     - **AD-StaleAccountsAudit** - Locates stale accounts in AD by looking for PasswordLastChanged and LastLogonTimestamp
 
