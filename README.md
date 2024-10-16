@@ -43,9 +43,9 @@
 
 * ## $${\color{lightgreen}Incident Response}$$
 
-    - **AD-BulkDisable.ps1** - Takes a list of users from a CSV and disables them 
+    - **AD-BulkDisable** - Takes a list of users from a CSV and disables them 
 
-    - **AD-BulkPasswordReset.ps1** - Takes a list of users from a CSV and changes their passwords (randomly generates a 10 character password for each)
+    - **AD-BulkPasswordReset** - Takes a list of users from a CSV and changes their passwords (randomly generates a 10 character password for each)
    
 
 * ## $${\color{lightgreen}Entra}$$
