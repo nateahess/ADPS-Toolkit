@@ -10,7 +10,7 @@
 ### Scripts in this toolkit (Will be updated as new scripts are added)
 
 
-* ### **$${\color{lightblue}Audit}$$**
+* ## $${\color{lightblue}Audit}$$
 
     - **AD-StaleAccountsAudit** - Finds user accounts that do not require a password to sign in 
 
