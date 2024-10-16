@@ -21,19 +21,19 @@
     - **AD-ExpiredPasswordsAudit** - Provides a list of users with expired passwords 
 
 
-* ### Forensics
+* ## $${\color{lightblue}Forensics}$$
 
    - **AD-PasswordChange-Initiated-Audit** - Checks the last password change attempts for a user and displays the admin that initiated the change. 
 
 
-* ### Incident Response 
+* ## $${\color{lightblue}Incident Response}$$
 
     - **AD-BulkDisable.ps1** - Takes a list of users from a CSV and disables them 
 
     - **AD-BulkPasswordReset.ps1** - Takes a list of users from a CSV and changes their passwords (randomly generates a 10 character password for each)
 
 
-* ### Group Memberships
+* ## $${\color{lightblue}Group Memberships}$$
 
     - **AD-GroupMembers-All** - Provides a list of members for a specific group (includes all members)
 
@@ -43,19 +43,19 @@
 
     - **AD-RemoveUserGroupMemberships** - Takes a list of users and removes their group memberships. Great for quick permissions cleanup on disabled users. 
 
-* ### OU Memberships
+* ## $${\color{lightblue}OU Memberships}$$
 
     - **AD-GetOUMembersALL** - Provies a list of members for a specific OU 
 
 
-* ### Entra 
+* ## $${\color{lightblue}Entra}$$
 
     - **ENTRA-GetUserLicenses** - Provides a list of users and their assigned licenses from Entra 
 
     - **Entra-GetUserProxyAddresses** - Shows all proxy addresses for a specific user 
 
 
-* ### Other
+* ## $${\color{lightblue}Other}$$
 
     - **AD-AddMobilePhone** - Fill out mobile phone information for a list of users (must have a CSV with the required information) 
 
