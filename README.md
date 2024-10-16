@@ -20,7 +20,7 @@
 
     - **AD-ExpiredPasswordsAudit** - Provides a list of users with expired passwords 
 
-    #### $${\color{darkblue}Group Memberships}$$ 
+    #### $${\color{lightgreen}Group Memberships}$$ 
 
     - **AD-GroupMembers-All** - Provides a list of members for a specific group (includes all members)
 
@@ -31,7 +31,7 @@
     - **AD-RemoveUserGroupMemberships** - Takes a list of users and removes their group memberships. Great for quick permissions cleanup on disabled users. 
 
 
-    #### $${\color{darkblue} OU Memberships}$$
+    #### $${\color{lightgreen} OU Memberships}$$
 
     - **AD-GetOUMembersALL** - Provies a list of members for a specific OU 
 
