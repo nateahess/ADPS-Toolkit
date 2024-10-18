@@ -54,8 +54,7 @@ Function Browse-FileName($initialDirectory) {
     $rc = $OpenFileDialog.ShowDialog()
 
     if($rc -eq [System.Windows.Forms.DialogResult]::OK){
-        #$OpenFileDialog.filename
-
+       
         $filenamepath = $OpenFileDialog.filename 
         return $filenamepath 
 

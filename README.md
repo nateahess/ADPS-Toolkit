@@ -10,9 +10,9 @@
 ### Scripts in this toolkit (Will be updated as new scripts are added)
 
 
-* ## $${\color{lightgreen}Audit}$$
+* ### $${\color{lightblue}Audit}$$
 
-    - **AD-StaleAccountsAudit** - Finds user accounts that do not require a password to sign in 
+    - **AD-PasswordNotRequiredAudit** - Finds user accounts that do not require a password to sign in 
 
     - **AD-StaleAccountsAudit** - Locates stale accounts in AD by looking for PasswordLastChanged and LastLogonTimestamp
 
@@ -20,7 +20,20 @@
 
     - **AD-ExpiredPasswordsAudit** - Provides a list of users with expired passwords 
 
-    #### $${\color{lightblue}Group Memberships}$$ 
+
+* ### Forensics
+
+   - **AD-PasswordChange-Initiated-Audit** - Checks the last password change attempts for a user and displays the admin that initiated the change. 
+
+
+* ### Incident Response 
+
+    - **AD-BulkDisable.ps1** - Takes a list of users from a CSV and disables them 
+
+    - **AD-BulkPasswordReset.ps1** - Takes a list of users from a CSV and changes their passwords (randomly generates a 10 character password for each)
+
+
+* ### Group Memberships
 
     - **AD-GroupMembers-All** - Provides a list of members for a specific group (includes all members)
 
@@ -30,32 +43,19 @@
 
     - **AD-RemoveUserGroupMemberships** - Takes a list of users and removes their group memberships. Great for quick permissions cleanup on disabled users. 
 
-
-    #### $${\color{lightblue} OU Memberships}$$
+* ### OU Memberships
 
     - **AD-GetOUMembersALL** - Provies a list of members for a specific OU 
 
 
-* ## $${\color{lightgreen}Forensics}$$
-
-   - **AD-PasswordChange-Initiated-Audit** - Checks the last password change attempts for a user and displays the admin that initiated the change. 
-
-
-* ## $${\color{lightgreen}Incident Response}$$
-
-    - **AD-BulkDisable** - Takes a list of users from a CSV and disables them 
-
-    - **AD-BulkPasswordReset** - Takes a list of users from a CSV and changes their passwords (randomly generates a 10 character password for each)
-   
-
-* ## $${\color{lightgreen}Entra}$$
+* ### Entra 
 
     - **ENTRA-GetUserLicenses** - Provides a list of users and their assigned licenses from Entra 
 
     - **Entra-GetUserProxyAddresses** - Shows all proxy addresses for a specific user 
 
 
-* ## $${\color{lightgreen}Other}$$
+* ### Other
 
     - **AD-AddMobilePhone** - Fill out mobile phone information for a list of users (must have a CSV with the required information) 
 
