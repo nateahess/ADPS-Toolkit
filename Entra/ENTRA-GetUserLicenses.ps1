@@ -13,27 +13,6 @@ VERSION NOTES:
 
 #> 
 
-#Check for ActiveDirectory Module 
-Write-Host "Loading Microsoft.Graph Module." 
-$mgmodule = Get-Module -ListAvailable | Where-Object {$_.Name -eq "Microsoft.Graph"}
-
-if ($mgmodule -eq $null) {
-
-    try {
-
-        Install-Module -Name Microsoft.Graph
-
-    } catch {
-
-        $errmsg = $_.ErrorMessage
-        Write-Error "Microsoft.Graph module is required for this script."
-        Write-Error "Please run PowerShell as Administrator and execute: Install-Module -Name Microsoft.Graph then try again."
-        Write-Error $errmsg 
-        return 
-    }
-
-}
-
 
 Import-Module Microsoft.Graph
 
