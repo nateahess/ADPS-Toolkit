@@ -41,7 +41,7 @@
 
 * ## $${\color{lightgreen}Forensics}$$
 
-       - **AD-PasswordChange-Initiated-Audit** - Checks the last password change attempts for a user and displays the admin that initiated the change. 
+        - **AD-PasswordChange-Initiated-Audit** - Checks the last password change attempts for a user and displays the admin that initiated the change. 
 
 
 * ## $${\color{lightgreen}Incident Response}$$
