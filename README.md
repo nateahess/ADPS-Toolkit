@@ -41,16 +41,16 @@
 
 * ## $${\color{lightgreen}Forensics}$$
 
-        - **AD-PasswordChange-Initiated-Audit** - Checks the last password change attempts for a user and displays the admin that initiated the change. 
+    - **AD-PasswordChange-Initiated-Audit** - Checks the last password change attempts for a user and displays the admin that initiated the change. 
 
 
 * ## $${\color{lightgreen}Incident Response}$$
 
-        - **AD-BulkDisable.ps1** - Takes a list of users from a CSV and disables them 
+    - **AD-BulkDisable.ps1** - Takes a list of users from a CSV and disables them 
 
-        - **AD-BulkPasswordReset.ps1** - Takes a list of users from a CSV and changes their passwords (randomly generates a 10 character password for each)
+    - **AD-BulkPasswordReset.ps1** - Takes a list of users from a CSV and changes their passwords (randomly generates a 10 character password for each)
 
-        - **AD-GetSAMfromUPNlist.ps1** - Takes a CSV list of UPNs and provides the SAMAccountName for each 
+    - **AD-GetSAMfromUPNlist.ps1** - Takes a CSV list of UPNs and provides the SAMAccountName for each 
 
 
 * ## $${\color{lightgreen}Entra}$$ 
