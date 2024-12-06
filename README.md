@@ -10,21 +10,21 @@
 ### Scripts in this toolkit (Will be updated as new scripts are added)
 
 
-* ## $${\color{lightblue}Audit}$$
+* ## $${\color{lightgreen}Audit}$$
 
-    * ### $${\color{lightgreen}Passwords}$$
+    * ### $${\color{lightblue}Passwords}$$
 
         - **AD-PasswordNotRequiredAudit** - Finds user accounts that do not require a password to sign in 
 
         - **AD-ExpiredPasswordsAudit** - Provides a list of users with expired passwords 
 
-    * ### $${\color{lightgreen}Stale Accounts}$$
+    * ### $${\color{lightblue}Stale Accounts}$$
 
         - **AD-StaleAccountsAudit** - Locates stale accounts in AD by looking for PasswordLastChanged and LastLogonTimestamp
 
         - **AD-StaleAccountsAudit2** - Locates stale accounts in AD by using the Search-ADUser -AccountInactive command 
 
-    * ### $${\color{lightgreen}Group Memberships}$$
+    * ### $${\color{lightblue}Group Memberships}$$
 
         - **AD-GroupMembers-All** - Provides a list of members for a specific group (includes all members)
 
@@ -34,17 +34,17 @@
 
         - **AD-RemoveUserGroupMemberships** - Takes a list of users and removes their group memberships. Great for quick  permissions cleanup on disabled users. 
 
-    * ### $${\color{lightgreen}OU Memberships}$$
+    * ### $${\color{lightblue}OU Memberships}$$
 
         - **AD-GetOUMembersALL** - Provies a list of members for a specific OU 
 
 
-* ## $${\color{lightblue}Forensics}$$
+* ## $${\color{lightgreen}Forensics}$$
 
        - **AD-PasswordChange-Initiated-Audit** - Checks the last password change attempts for a user and displays the admin that initiated the change. 
 
 
-* ## $${\color{lightblue}Incident Response}$$
+* ## $${\color{lightgreen}Incident Response}$$
 
         - **AD-BulkDisable.ps1** - Takes a list of users from a CSV and disables them 
 
@@ -53,7 +53,7 @@
         - **AD-GetSAMfromUPNlist.ps1** - Takes a CSV list of UPNs and provides the SAMAccountName for each 
 
 
-* ## $${\color{lightblue}Entra}$$ 
+* ## $${\color{lightgreen}Entra}$$ 
 
     - **Entra-GetUserLicenses** - Provides a list of users and their assigned licenses from Entra 
 
@@ -62,7 +62,7 @@
     - **Entra-DismissRiskyUsers.ps1** - Dismisses risky users in bulk from a CSV import 
 
 
-* ## $${\color{lightblue}Miscellaneous}$$
+* ## $${\color{lightgreen}Miscellaneous}$$
 
     - **PasswordGenerator** - Generates a random password! 
 
