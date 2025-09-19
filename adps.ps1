@@ -28,33 +28,86 @@ param(
     [Parameter()]
     [hashtable]$ScriptParameters,
 
-    [switch]$ListAvailable
+    [switch]$ListAvailable,
+
+    [Alias('h')]
+    [switch]$Help
 )
 
 $scriptRoot = $PSScriptRoot
 $allScripts = Get-ChildItem -Path $scriptRoot -Recurse -Filter '*.ps1' -File |
     Where-Object { $_.FullName -ne $PSCommandPath }
 
-if ($ListAvailable) {
-    Write-Host "Available scripts:" -ForegroundColor Cyan
-    foreach ($item in $allScripts | Sort-Object FullName) {
-        $relativePath = $item.FullName.Substring($scriptRoot.Length).TrimStart('\\','/')
-        Write-Host " - $relativePath"
+$defaultParameterNames = @(
+    'Verbose','Debug','ErrorAction','WarningAction','InformationAction',
+    'ErrorVariable','WarningVariable','InformationVariable','OutVariable',
+    'OutBuffer','PipelineVariable'
+)
+
+$scriptMetadata = foreach ($item in $allScripts) {
+    $relativePath = $item.FullName.Substring($scriptRoot.Length).TrimStart('\\','/')
+
+    $parameters = @()
+    try {
+        $commandInfo = Get-Command -Name $item.FullName -ErrorAction Stop
+        $parameters = $commandInfo.Parameters.Keys |
+            Where-Object { $defaultParameterNames -notcontains $_ } |
+            Sort-Object
+    } catch {
+        $parameters = @()
     }
+
+    [PSCustomObject]@{
+        RelativePath = $relativePath
+        FullName     = $item.FullName
+        Parameters   = $parameters
+    }
+}
+
+function Show-ScriptList {
+    param(
+        [Parameter(Mandatory)]
+        [System.Collections.IEnumerable]$Metadata,
+
+        [switch]$IncludeParameterDetails
+    )
+
+    Write-Host "Available scripts:" -ForegroundColor Cyan
+    foreach ($entry in $Metadata | Sort-Object RelativePath) {
+        Write-Host " - $($entry.RelativePath)"
+        if ($IncludeParameterDetails) {
+            $parameterText = if ($entry.Parameters -and $entry.Parameters.Count) {
+                $entry.Parameters -join ', '
+            } else {
+                '(none specified)'
+            }
+
+            Write-Host "    Parameters: $parameterText"
+        }
+    }
+}
+
+if ($Help) {
+    Show-ScriptList -Metadata $scriptMetadata -IncludeParameterDetails
+    return
+}
+
+if ($ListAvailable) {
+    Show-ScriptList -Metadata $scriptMetadata
 
     if (-not $Script) {
         return
     }
 }
 
-if (-not $ListAvailable) {
+if (-not ($ListAvailable -or $Help)) {
     if ([string]::IsNullOrWhiteSpace($Domain)) {
         throw "Parameter -Domain is required when launching a script."
     }
 }
 
 if ([string]::IsNullOrWhiteSpace($Script)) {
-    throw "Specify the script to launch using -Script or use -ListAvailable to see options."
+    throw "Specify the script to launch using -Script or use -ListAvailable/-Help to see options."
 }
 
 $normalizedInput = $Script.Replace('/', [System.IO.Path]::DirectorySeparatorChar)
@@ -83,7 +136,7 @@ if (-not $resolvedPath) {
 }
 
 if (-not $resolvedPath) {
-    throw "Unable to locate a script for input '$Script'. Use -ListAvailable to review valid options."
+    throw "Unable to locate a script for input '$Script'. Use -ListAvailable or -Help to review valid options."
 }
 
 $launchArguments = @()
