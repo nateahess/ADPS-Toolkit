@@ -17,161 +17,61 @@ VERSION NOTES
 
 [CmdletBinding()]
 param(
-    [Parameter()]
-    [ValidateNotNullOrEmpty()]
-    [string]$Domain,
-
-    [Parameter()]
-    [ValidateNotNullOrEmpty()]
-    [string]$Script,
-
-    [Parameter()]
-    [hashtable]$ScriptParameters,
-
-    [switch]$ListAvailable,
-
-    [Alias('h')]
+    [Parameter(Mandatory=$false)]
+    [Alias("s")]
+    [string]$Script
+    
+    [Parameter(Mandatory=$false)]
+    [Alias("h")]
     [switch]$Help
 )
 
-$scriptRoot = $PSScriptRoot
-$allScripts = Get-ChildItem -Path $scriptRoot -Recurse -Filter '*.ps1' -File |
-    Where-Object { $_.FullName -ne $PSCommandPath }
+#Check for ActiveDirectory Module 
+Write-Host "Loading Active Directory Module." 
+$admodule = Get-Module -ListAvailable | Where-Object {$_.Name -eq "ActiveDirectory"}
 
-$defaultParameterNames = @(
-    'Verbose','Debug','ErrorAction','WarningAction','InformationAction',
-    'ErrorVariable','WarningVariable','InformationVariable','OutVariable',
-    'OutBuffer','PipelineVariable'
-)
+if ($admodule -eq $null) {
 
-$scriptMetadata = foreach ($item in $allScripts) {
-    $relativePath = $item.FullName.Substring($scriptRoot.Length).TrimStart('\\','/')
-
-    $parameters = @()
     try {
-        $commandInfo = Get-Command -Name $item.FullName -ErrorAction Stop
-        $parameters = $commandInfo.Parameters.Keys |
-            Where-Object { $defaultParameterNames -notcontains $_ } |
-            Sort-Object
+
+        Install-Module -Name ActiveDirectory
+
     } catch {
-        $parameters = @()
+
+        $errmsg = $_.ErrorMessage
+        Write-Error "ActiveDirectory module is required for this script."
+        Write-Error "Please run PowerShell as Administrator and execute: Install-Module -Name ActiveDirectory then try again."
+        Write-Error $errmsg 
+        return 
     }
 
-    [PSCustomObject]@{
-        RelativePath = $relativePath
-        FullName     = $item.FullName
-        Parameters   = $parameters
-    }
 }
 
-function Show-ScriptList {
-    param(
-        [Parameter(Mandatory)]
-        [System.Collections.IEnumerable]$Metadata,
+Import-Module ActiveDirectory 
 
-        [switch]$IncludeParameterDetails
-    )
-
-    Write-Host "Available scripts:" -ForegroundColor Cyan
-    foreach ($entry in $Metadata | Sort-Object RelativePath) {
-        Write-Host " - $($entry.RelativePath)"
-        if ($IncludeParameterDetails) {
-            $parameterText = if ($entry.Parameters -and $entry.Parameters.Count) {
-                $entry.Parameters -join ', '
-            } else {
-                '(none specified)'
-            }
-
-            Write-Host "    Parameters: $parameterText"
-        }
-    }
-}
+Clear-Host 
 
 if ($Help) {
-    Show-ScriptList -Metadata $scriptMetadata -IncludeParameterDetails
-    return
-}
+    Write-Host "ADPS.ps1" -ForegroundColor Cyan
+    Write-Host "Usage: .\adps.ps1 [options]" -ForegroundColor Green
+    Write-Host "Options:" -ForegroundColor Cyan
+    Write-Host "-Script or -s | Select what script you'd like to run (type -Script -H for a list of options)" -ForegroundColor Cyan
+    Write-Host "  -Help    Show this help message" - ForegroundColor -Cyan
+    exit
 
-if ($ListAvailable) {
-    Show-ScriptList -Metadata $scriptMetadata
+} elseif ($Script) { 
 
-    if (-not $Script) {
-        return
-    }
-}
+    .\SupportingFiles\Initialize.ps1 
+    $RunScript = "$" + "$Script"
 
-if (-not ($ListAvailable -or $Help)) {
-    if ([string]::IsNullOrWhiteSpace($Domain)) {
-        throw "Parameter -Domain is required when launching a script."
-    }
-}
+    try { 
+        
+        $RunScript
 
-if ([string]::IsNullOrWhiteSpace($Script)) {
-    throw "Specify the script to launch using -Script or use -ListAvailable/-Help to see options."
-}
+    } catch { 
 
-$normalizedInput = $Script.Replace('/', [System.IO.Path]::DirectorySeparatorChar)
-$resolvedPath = $null
-
-if (Test-Path -LiteralPath $normalizedInput) {
-    $resolvedPath = (Resolve-Path -LiteralPath $normalizedInput).Path
-} else {
-    $candidatePath = Join-Path -Path $scriptRoot -ChildPath $normalizedInput
-    if (Test-Path -LiteralPath $candidatePath) {
-        $resolvedPath = (Resolve-Path -LiteralPath $candidatePath).Path
-    }
-}
-
-if (-not $resolvedPath) {
-    $matchingScripts = $allScripts | Where-Object {
-        $_.Name -eq $Script -or $_.BaseName -eq $Script
+        Write-Host "Not a valid function for -Script or -s. Please try again."
     }
 
-    if ($matchingScripts.Count -eq 1) {
-        $resolvedPath = $matchingScripts[0].FullName
-    } elseif ($matchingScripts.Count -gt 1) {
-        $matches = $matchingScripts | ForEach-Object { $_.FullName.Substring($scriptRoot.Length).TrimStart('\\','/') }
-        throw "Multiple scripts found matching '$Script'. Be more specific: `n$($matches -join "`n")"
-    }
 }
 
-if (-not $resolvedPath) {
-    throw "Unable to locate a script for input '$Script'. Use -ListAvailable or -Help to review valid options."
-}
-
-$launchArguments = @()
-if (-not $ScriptParameters -or -not $ScriptParameters.ContainsKey('Domain')) {
-    if ([string]::IsNullOrWhiteSpace($Domain)) {
-        throw "Parameter -Domain is required unless it is passed via -ScriptParameters."
-    }
-    $launchArguments += '-Domain'
-    $launchArguments += $Domain
-}
-
-if ($ScriptParameters) {
-    foreach ($key in $ScriptParameters.Keys) {
-        $launchArguments += "-$key"
-        $value = $ScriptParameters[$key]
-
-        if ($null -eq $value) {
-            continue
-        }
-
-        if ($value -is [System.Collections.IEnumerable] -and -not ($value -is [string])) {
-            foreach ($item in $value) {
-                $launchArguments += $item
-            }
-        } else {
-            $launchArguments += $value
-        }
-    }
-}
-
-$relativeLaunchPath = $resolvedPath.Substring($scriptRoot.Length).TrimStart('\\','/')
-Write-Host "Launching $relativeLaunchPath with arguments: $($launchArguments -join ' ')" -ForegroundColor Green
-
-try {
-    & $resolvedPath @launchArguments
-} catch {
-    throw "Failed to execute '$relativeLaunchPath': $($_.Exception.Message)"
-}
