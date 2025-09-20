@@ -26,27 +26,6 @@ param(
     [switch]$Help
 )
 
-#Check for ActiveDirectory Module 
-Write-Host "Loading Active Directory Module." 
-$admodule = Get-Module -ListAvailable | Where-Object {$_.Name -eq "ActiveDirectory"}
-
-if ($admodule -eq $null) {
-
-    try {
-
-        Install-Module -Name ActiveDirectory
-
-    } catch {
-
-        $errmsg = $_.ErrorMessage
-        Write-Error "ActiveDirectory module is required for this script."
-        Write-Error "Please run PowerShell as Administrator and execute: Install-Module -Name ActiveDirectory then try again."
-        Write-Error $errmsg 
-        return 
-    }
-
-}
-
 Import-Module ActiveDirectory 
 
 Clear-Host 
@@ -61,16 +40,18 @@ if ($Help) {
 
 } elseif ($Script) { 
 
-    .\SupportingFiles\Initialize.ps1 
-    $RunScript = "$" + "$Script"
+    Write-Host "....Loading initialization script" -ForegroundColor Cyan 
+    ".\Supporting Files\Initialize.ps1"
 
     try { 
         
-        $RunScript
+        $RunScript = $Scripts[$Script]
+        & $RunScript
 
     } catch { 
 
-        Write-Host "Not a valid function for -Script or -s. Please try again."
+        Write-Host "$Script does not appear to be a valid parameter for -Scripts, please try again." 
+        exit 
     }
 
 }
