@@ -40,7 +40,6 @@ if ($Help) {
 
 } elseif ($Script) { 
 
-    Write-Host "....Loading initialization script" -ForegroundColor Cyan 
     ".\Supporting Files\Initialize.ps1"
 
     try { 
