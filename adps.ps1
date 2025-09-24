@@ -35,10 +35,23 @@ param(
 #Hashtable for scripts 
 $Scripts = @{
 
-"AuditGroupMembershipUsers" = "Audit\Group Memberships\AD-GetGroupMembers-Users.ps1"
-"AuditGroupMembershipAll" = "Audit\Group Memberships\AD-GetGroupMembers-All.ps1"
+"AuditGroupMembershipUsers" = "Audit\Group Memberships\AD-GetGroupMembershipUsers.ps1"
+"AuditGroupMembershipAll" = "Audit\Group Memberships\AD-GetGroupMembershipAll.ps1"
 "AuditGroupMembershipNests" = "Audit\Group Memberships\AD-GroupMembershipNests.ps1"
 "AuditOUMembershipAll" = "Audit\OU Memberships\AD-GetOUMembersAll.ps1"
+"AuditExpiredPasswords" =  "Audit\Passwords\AD-ExpiredPasswordsAudit.ps1"
+"AuditPasswordNotRequired" = "Audit\Passwords\AD-PasswordNotRequiredAudit.ps1"
+"AuditStaleAccounts" = "Audit\Stale Accounts\AD-StaleAccountsAudit"
+"Audit365Licenses" = "Entra\ENTRA-GetUserLicenses.ps1"
+"Audit365ProxyAddress" = "Entra\Entra-GetUserProxyAddresses.ps1"
+"PasswordChangeLogs" = "Forensics\AD-PasswordChange-Initiated-Audit.ps1"
+"BulkDisableAccounts" = "Incident Response\AD-BulkDisable.ps1"
+"BulkPasswordReset" = "Incident Response\AD-BulkPasswordReset.ps1"
+"GetSAMfromUPN" = "Incident Response\AD-GetSAMfromUPNlist.ps1"
+"CheckUnresolvedSID" = "Miscellaneous\AD-CheckUnresolvedSID.ps1"
+"GenerateRandomPassword" = "Miscellaneous\PasswordGenerator.ps1"
+
+
 
 }
 
