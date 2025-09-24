@@ -17,41 +17,91 @@ VERSION NOTES
 
 [CmdletBinding()]
 param(
+
     [Parameter(Mandatory=$false)]
     [Alias("s")]
-    [string]$Script
+    [string]$Script,
     
     [Parameter(Mandatory=$false)]
     [Alias("h")]
-    [switch]$Help
+    [switch]$Help,
+
+    [Parameter(Mandatory=$false)]
+    [Alias("ss")]
+    [switch]$ShowScripts
+
 )
 
-Import-Module ActiveDirectory 
+#Hashtable for scripts 
+$Scripts = @{
 
-Clear-Host 
-
-if ($Help) {
-    Write-Host "ADPS.ps1" -ForegroundColor Cyan
-    Write-Host "Usage: .\adps.ps1 [options]" -ForegroundColor Green
-    Write-Host "Options:" -ForegroundColor Cyan
-    Write-Host "-Script or -s | Select what script you'd like to run (type -Script -H for a list of options)" -ForegroundColor Cyan
-    Write-Host "  -Help    Show this help message" - ForegroundColor -Cyan
-    exit
-
-} elseif ($Script) { 
-
-    ".\Supporting Files\Initialize.ps1"
-
-    try { 
-        
-        $RunScript = $Scripts[$Script]
-        & $RunScript
-
-    } catch { 
-
-        Write-Host "$Script does not appear to be a valid parameter for -Scripts, please try again." 
-        exit 
-    }
+"AuditGroupMembershipUsers" = "Audit\Group Memberships\AD-GetGroupMembers-Users.ps1"
+"AuditGroupMembershipAll" = "Audit\Group Memberships\AD-GetGroupMembers-All.ps1"
+"AuditGroupMembershipNests" = "Audit\Group Memberships\AD-GroupMembershipNests.ps1"
+"AuditOUMembershipAll" = "Audit\OU Memberships\AD-GetOUMembersAll.ps1"
 
 }
 
+if ($Help) {
+    Write-Host " 
+    
+    ___    ____  ____  _____             ___
+   /   |  / __ \/ __ \/ ___/  ____  ____<  /
+  / /| | / / / / /_/ /\__ \  / __ \/ ___/ / 
+ / ___ |/ /_/ / ____/___/ / / /_/ (__  ) /  
+/_/  |_/_____/_/    /____(_) .___/____/_/   
+                          /_/               
+    
+    " -ForegroundColor Green
+
+    Write-Host "" 
+    Write-Host "ADPS.ps1" -ForegroundColor Cyan
+    Write-Host "Usage: .\adps.ps1 -Script <ScriptName>" -ForegroundColor Green
+    Write-Host "" 
+    Write-Host "Options:" -ForegroundColor Cyan
+    Write-Host "-Script or -s | Select what script you'd like to run (type -Script -H for a list of options)" -ForegroundColor Cyan
+    Write-Host ""
+    Write-Host "For a list of available scripts, type -ShowScripts" 
+    Write-Host "  -Help    Show this help message" - ForegroundColor -Cyan
+    exit
+
+} elseif ($ShowScripts) { 
+
+    Write-Host " 
+    
+    ___    ____  ____  _____             ___
+   /   |  / __ \/ __ \/ ___/  ____  ____<  /
+  / /| | / / / / /_/ /\__ \  / __ \/ ___/ / 
+ / ___ |/ /_/ / ____/___/ / / /_/ (__  ) /  
+/_/  |_/_____/_/    /____(_) .___/____/_/   
+                          /_/               
+    
+    " -ForegroundColor Green
+
+    Write-Host "Here is a list of available scripts: " 
+    Write-Host ""
+    Write-Host "Auditing" -ForegroundColor Cyan
+    Write-Host "..... AuditGroupMembershipAll   | Looks for all objects that are members of a group" -ForegroundColor Cyan
+    Write-Host "..... AuditGroupMembershipUsers | Looks for all users in a group" -ForegroundColor Cyan
+    Write-Host "..... AuditGroupMembershipNests | Looks for nested groups within a single group" -ForegroundColor Cyan
+    Write-Host "..... AuditOUMembershipAll      | Looks for all objects that are members of an OU" -ForegroundColor Cyan
+    Write-Host ""
+
+} elseif ($Script) { 
+
+    try { 
+
+        $RunScript = $Scripts[$Script]
+        & $RunScript  
+
+    } catch { 
+
+        Write-Host "$Script does not appear to be a valid parameter for -Scripts, please try again." -ForegroundColor Red
+        exit 
+    }
+
+} else { 
+
+    Write-Host "Invalid parameter, please try again" -ForegroundColor Red 
+
+}
