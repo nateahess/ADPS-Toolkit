@@ -52,7 +52,6 @@ $Scripts = @{
 "GenerateRandomPassword" = "Miscellaneous\PasswordGenerator.ps1"
 
 
-
 }
 
 if ($Help) {
@@ -98,6 +97,25 @@ if ($Help) {
     Write-Host "..... AuditGroupMembershipUsers | Looks for all users in a group" -ForegroundColor Cyan
     Write-Host "..... AuditGroupMembershipNests | Looks for nested groups within a single group" -ForegroundColor Cyan
     Write-Host "..... AuditOUMembershipAll      | Looks for all objects that are members of an OU" -ForegroundColor Cyan
+    Write-Host "..... AuditExpiredPasswords     | Lists accounts with expired passwords" -ForegroundColor Cyan
+    Write-Host "..... AuditPasswordNotRequired  | Finds accounts that do not require a password" -ForegroundColor Cyan
+    Write-Host "..... AuditStaleAccounts        | Reports on inactive AD accounts" -ForegroundColor Cyan
+    Write-Host ""
+    Write-Host "Entra" -ForegroundColor Cyan
+    Write-Host "..... Audit365Licenses          | Exports assigned Microsoft 365 licenses" -ForegroundColor Cyan
+    Write-Host "..... Audit365ProxyAddress      | Collects Entra ID proxy addresses" -ForegroundColor Cyan
+    Write-Host "" 
+    Write-Host "Forensics" -ForegroundColor Cyan
+    Write-Host "..... PasswordChangeLogs        | Audits password change events" -ForegroundColor Cyan
+    Write-Host ""
+    Write-Host "Incident Response" -ForegroundColor Cyan
+    Write-Host "..... BulkDisableAccounts       | Disables a list of accounts" -ForegroundColor Cyan
+    Write-Host "..... BulkPasswordReset         | Performs bulk password resets" -ForegroundColor Cyan
+    Write-Host "..... GetSAMfromUPN             | Converts UPN list to SAMAccountNames" -ForegroundColor Cyan
+    Write-Host ""
+    Write-Host "Miscellaneous" -ForegroundColor Cyan
+    Write-Host "..... CheckUnresolvedSID        | Looks for unresolved SIDs in ACLs" -ForegroundColor Cyan
+    Write-Host "..... GenerateRandomPassword    | Creates a strong random password" -ForegroundColor Cyan
     Write-Host ""
 
 } elseif ($Script) { 
