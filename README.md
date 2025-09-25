@@ -10,11 +10,11 @@
 
 Usage: 
 
-*.\adps.ps1 -Script <ScriptName>* (Runs a script)
+.\adps.ps1 -Script <ScriptName> *(Runs a script)*
 
-*.\adps.ps1 -ShowScripts* (Lists available scripts)
+.\adps.ps1 -ShowScripts *(Lists available scripts)*
 
-*.\adps.ps1 -Help* (or -h) (Shows help screen)
+.\adps.ps1 -Help (or -h) *(Shows help screen)*
 
 
 
