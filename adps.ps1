@@ -73,8 +73,8 @@ if ($Help) {
     Write-Host "Options:" -ForegroundColor Cyan
     Write-Host "-Script or -s | Select what script you'd like to run (type -Script -H for a list of options)" -ForegroundColor Cyan
     Write-Host ""
-    Write-Host "For a list of available scripts, type -ShowScripts" 
-    Write-Host "  -Help    Show this help message" - ForegroundColor -Cyan
+    Write-Host "For a list of available scripts, type -ShowScripts"
+    Write-Host "  -Help    Show this help message" -ForegroundColor Cyan
     exit
 
 } elseif ($ShowScripts) { 
