@@ -44,6 +44,7 @@ $Scripts = @{
 "AuditStaleAccounts" = "Audit\Stale Accounts\AD-StaleAccountsAudit2.ps1"
 "Audit365Licenses" = "Entra\ENTRA-GetUserLicenses.ps1"
 "Audit365ProxyAddress" = "Entra\Entra-GetUserProxyAddresses.ps1"
+"EntraBulkCloudGroupAdd" = "Entra\Entra-BulkCloudGroupAdd.ps1"
 "PasswordChangeLogs" = "Forensics\AD-PasswordChange-Initiated-Audit.ps1"
 "BulkDisableAccounts" = "Incident Response\AD-BulkDisable.ps1"
 "BulkPasswordReset" = "Incident Response\AD-BulkPasswordReset.ps1"
@@ -104,6 +105,7 @@ if ($Help) {
     Write-Host "Entra" -ForegroundColor Cyan
     Write-Host "..... Audit365Licenses          | Exports assigned Microsoft 365 licenses" -ForegroundColor Cyan
     Write-Host "..... Audit365ProxyAddress      | Collects Entra ID proxy addresses" -ForegroundColor Cyan
+    Write-Host "..... EntraBulkCloudGroupAdd    | Bulk adds users to Entra cloud groups" -ForegroundColor Cyan
     Write-Host "" 
     Write-Host "Forensics" -ForegroundColor Cyan
     Write-Host "..... PasswordChangeLogs        | Audits password change events" -ForegroundColor Cyan
