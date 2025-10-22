@@ -1,17 +1,22 @@
 <#
 
 TITLE: ADPS.ps1
-VERSION: 1.0 
-DATE: 9/19/2025
-AUTHOR: nateahess 
-DESCRIPTION: Main script to launch any of the functions of other ADPS scripts 
+VERSION: 1.1
+DATE: 10/22/2025
+AUTHOR: nateahess
+DESCRIPTION: Main script to launch any of the functions of other ADPS scripts
 
-Usage: .\adps.ps1 -Domain corp.example -Script "Audit/Group Memberships/AD-Group-MembershipUsers.ps1" -ScriptParameters @{GroupNames='Tier1'}
-Help: .\adps.ps1 -h or -Help
+Usage: .\adps.ps1 -Script <ScriptName>
+Examples:
+  .\adps.ps1 -Script AuditGroupMembershipUsers
+  .\adps.ps1 -s BulkDisableAccounts
+  .\adps.ps1 -ShowScripts
+Help: .\adps.ps1 -Help
 
-VERSION NOTES 
+VERSION NOTES
 
 > 1.0 | Initial Script creation and testing
+> 1.1 | Code review fixes: improved validation, error handling, and user experience
 
 #> 
 
@@ -31,6 +36,20 @@ param(
     [switch]$ShowScripts
 
 )
+
+# Function to display ASCII banner
+function Show-Banner {
+    Write-Host "
+
+    ___    ____  ____  _____             ___
+   /   |  / __ \/ __ \/ ___/  ____  ____<  /
+  / /| | / / / / /_/ /\__ \  / __ \/ ___/ /
+ / ___ |/ /_/ / ____/___/ / / /_/ (__  ) /
+/_/  |_/_____/_/    /____(_) .___/____/_/
+                          /_/
+
+    " -ForegroundColor Green
+}
 
 #Hashtable for scripts 
 $Scripts = @{
@@ -56,41 +75,20 @@ $Scripts = @{
 }
 
 if ($Help) {
-    Write-Host " 
-    
-    ___    ____  ____  _____             ___
-   /   |  / __ \/ __ \/ ___/  ____  ____<  /
-  / /| | / / / / /_/ /\__ \  / __ \/ ___/ / 
- / ___ |/ /_/ / ____/___/ / / /_/ (__  ) /  
-/_/  |_/_____/_/    /____(_) .___/____/_/   
-                          /_/               
-    
-    " -ForegroundColor Green
-
+    Show-Banner
     Write-Host "" 
     Write-Host "ADPS.ps1" -ForegroundColor Cyan
     Write-Host "Usage: .\adps.ps1 -Script <ScriptName>" -ForegroundColor Green
     Write-Host "" 
     Write-Host "Options:" -ForegroundColor Cyan
-    Write-Host "-Script or -s | Select what script you'd like to run (type -Script -H for a list of options)" -ForegroundColor Cyan
+    Write-Host "  -Script or -s      | Select what script you'd like to run" -ForegroundColor Cyan
+    Write-Host "  -ShowScripts or -ss| Display all available scripts" -ForegroundColor Cyan
+    Write-Host "  -Help or -h        | Show this help message" -ForegroundColor Cyan
     Write-Host ""
-    Write-Host "For a list of available scripts, type -ShowScripts"
-    Write-Host "  -Help    Show this help message" -ForegroundColor Cyan
-    exit
+    exit 0
 
-} elseif ($ShowScripts) { 
-
-    Write-Host " 
-    
-    ___    ____  ____  _____             ___
-   /   |  / __ \/ __ \/ ___/  ____  ____<  /
-  / /| | / / / / /_/ /\__ \  / __ \/ ___/ / 
- / ___ |/ /_/ / ____/___/ / / /_/ (__  ) /  
-/_/  |_/_____/_/    /____(_) .___/____/_/   
-                          /_/               
-    
-    " -ForegroundColor Green
-
+} elseif ($ShowScripts) {
+    Show-Banner
     Write-Host "Here is a list of available scripts: " 
     Write-Host ""
     Write-Host "Auditing" -ForegroundColor Cyan
@@ -120,21 +118,41 @@ if ($Help) {
     Write-Host "..... GenerateRandomPassword    | Creates a strong random password" -ForegroundColor Cyan
     Write-Host ""
 
-} elseif ($Script) { 
-
-    try { 
-
+} elseif ($Script) {
+    # Check if the script key exists in the hashtable
+    if ($Scripts.ContainsKey($Script)) {
         $RunScript = $Scripts[$Script]
-        & $RunScript  
 
-    } catch { 
-
-        Write-Host "$Script does not appear to be a valid parameter for -Scripts, please try again." -ForegroundColor Red
-        exit 
+        # Verify the script file exists before executing
+        if (Test-Path $RunScript) {
+            try {
+                & $RunScript
+            } catch {
+                Write-Host "Error executing script: $($_.Exception.Message)" -ForegroundColor Red
+                exit 1
+            }
+        } else {
+            Write-Host "Script file not found: $RunScript" -ForegroundColor Red
+            Write-Host "Please verify the script exists in the expected location." -ForegroundColor Yellow
+            exit 1
+        }
+    } else {
+        Write-Host "'$Script' is not a valid script name." -ForegroundColor Red
+        Write-Host "Use -ShowScripts to see all available scripts." -ForegroundColor Yellow
+        exit 1
     }
 
-} else { 
-
-    Write-Host "Invalid parameter, please try again" -ForegroundColor Red 
-
+} else {
+    # No parameters provided - show help
+    Show-Banner
+    Write-Host ""
+    Write-Host "No parameters provided. Please specify an option." -ForegroundColor Yellow
+    Write-Host ""
+    Write-Host "Usage: .\adps.ps1 -Script <ScriptName>" -ForegroundColor Green
+    Write-Host ""
+    Write-Host "Quick Options:" -ForegroundColor Cyan
+    Write-Host "  -Help        | Display help information" -ForegroundColor Cyan
+    Write-Host "  -ShowScripts | List all available scripts" -ForegroundColor Cyan
+    Write-Host ""
+    exit 1
 }
