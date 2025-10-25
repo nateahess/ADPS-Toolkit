@@ -36,12 +36,9 @@ if ($admodule -eq $null) {
 }
 
 
-Import-Module ActiveDirectory 
+Import-Module ActiveDirectory
 
-Clear-Host 
-
-#Change execution policy 
-Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope LocalMachine 
+Clear-Host
 
 #Get current date for the filename 
 $date = (Get-Date).ToString("yyyyMMdd")
@@ -69,14 +66,12 @@ foreach ($groupName in $groupNames) {
         Write-Host ".....Retrieving data from $groupName" 
         $groupMembers = Get-ADGroupMember -Identity $groupName 
 
-    } catch { 
+    } catch {
 
         Write-Host ".....Retreiving data from $groupName"
-        $groupMembers = Get-ADGroupMember -Identity $groupName 
+        $groupMembers = Get-ADGroupMember -Identity $groupName
 
     }
-
-    $groupMembers = Get-ADGroupMember -Identity $groupNames
 
     #Loop through groups and get user members 
     foreach ($member in $groupMembers) { 
@@ -89,17 +84,17 @@ foreach ($groupName in $groupNames) {
                 #Filter only enabled accounts 
                 if ($user.Enabled) { 
 
-                    #Create a custom object with additional properties 
+                    #Create a custom object with additional properties
                     $userObject = [PSCustomObject]@{
-                        Name           = $user.name 
+                        Name           = $user.name
                         SamAccountName = $user.SamAccountName
-                        GroupName      = $Groupname 
+                        GroupName      = $groupName
                         MemberType     = "User"
-                        Enabled        = $user.Enabled 
+                        Enabled        = $user.Enabled
                         Title          = $user.title
-                        Department     = $useer.department 
-                        Manager        = $user.manager 
-                        Description    = $user.description 
+                        Department     = $user.department
+                        Manager        = $user.manager
+                        Description    = $user.description
                     }
 
                     #Add the user to the results table 
