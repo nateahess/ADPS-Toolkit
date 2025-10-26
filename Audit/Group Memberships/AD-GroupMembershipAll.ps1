@@ -3,25 +3,13 @@
     Lists all members of one or more Active Directory groups including nested groups.
 
 .DESCRIPTION
-    Script to list all members of a group (enabled users and nested groups included).
+    Interactive script to list all members of a group (enabled users and nested groups included).
     Recursively expands nested group memberships and exports results to CSV.
-
-.PARAMETER GroupNames
-    Array of group names to retrieve members for. If not specified, prompts interactively.
-
-.PARAMETER FileName
-    Base name for the report file. Date is appended automatically. If not specified, prompts interactively.
-
-.PARAMETER Interactive
-    Forces interactive mode even if parameters are provided.
+    Script prompts the user for group names and output filename.
 
 .EXAMPLE
     .\AD-GroupMembershipAll.ps1
-    Runs in interactive mode, prompting for group names and filename.
-
-.EXAMPLE
-    .\AD-GroupMembershipAll.ps1 -GroupNames "Domain Admins","Enterprise Admins" -FileName "AdminReport"
-    Generates a report for the specified groups with the given filename.
+    Runs the script and prompts for group names and filename.
 
 .NOTES
     TITLE: AD-GroupMembershipAll.ps1
@@ -33,21 +21,9 @@
     > 1.0 | Initial Script creation and testing
     > 1.1 | Switched to objects for holding member data so the output is cleaner
     > 1.2 | Bug fixes: corrected logic errors, improved error handling, added recursive group expansion,
-            performance improvements, parameter support, and comprehensive help documentation
+            performance improvements, and comprehensive help documentation
 
 #>
-
-[CmdletBinding()]
-param(
-    [Parameter(ValueFromPipeline = $true)]
-    [string[]]$GroupNames,
-
-    [Parameter()]
-    [string]$FileName,
-
-    [Parameter()]
-    [switch]$Interactive
-)
 
 # Check for ActiveDirectory Module
 Write-Host "Loading Active Directory Module."
@@ -72,38 +48,31 @@ if ($null -eq $admodule) {
 
 Import-Module ActiveDirectory
 
-# Only clear host in interactive mode
-if ($Interactive -or -not $PSBoundParameters.ContainsKey('GroupNames')) {
-    Clear-Host
-}
+Clear-Host
 
 # Get current date for the filename
 $date = (Get-Date).ToString("yyyyMMdd")
 
-# Get group names if not provided as parameter
-if (-not $GroupNames -or $Interactive) {
-    Write-Host "Please enter the group or groups you would like to retrieve members for. (If more than one group, separate by comma)."
-    $userInput = Read-Host "> "
+# Prompt for group names
+Write-Host "Please enter the group or groups you would like to retrieve members for. (If more than one group, separate by comma)."
+$userInput = Read-Host "> "
 
-    # Validate input
-    if ([string]::IsNullOrWhiteSpace($userInput)) {
-        Write-Error "No group names provided. Exiting."
-        return
-    }
-
-    # Split and trim whitespace from group names
-    $GroupNames = $userInput -split "," | ForEach-Object { $_.Trim() } | Where-Object { -not [string]::IsNullOrWhiteSpace($_) }
+# Validate input
+if ([string]::IsNullOrWhiteSpace($userInput)) {
+    Write-Error "No group names provided. Exiting."
+    return
 }
 
-# Get input and set variable for file name
-if (-not $FileName -or $Interactive) {
-    $FileName = Read-Host "Please enter a name for the report (date is added automatically)"
+# Split and trim whitespace from group names
+$GroupNames = $userInput -split "," | ForEach-Object { $_.Trim() } | Where-Object { -not [string]::IsNullOrWhiteSpace($_) }
 
-    # Validate filename
-    if ([string]::IsNullOrWhiteSpace($FileName)) {
-        Write-Error "No filename provided. Exiting."
-        return
-    }
+# Prompt for filename
+$FileName = Read-Host "Please enter a name for the report (date is added automatically)"
+
+# Validate filename
+if ([string]::IsNullOrWhiteSpace($FileName)) {
+    Write-Error "No filename provided. Exiting."
+    return
 }
 
 # Initialize an ArrayList to hold results (better performance than array concatenation)
@@ -215,7 +184,4 @@ $userTable | Export-Csv -Path "$PSScriptRoot\$FileName-$date.csv" -NoTypeInforma
 Write-Host "Complete"
 Write-Host "Report can be found at $PSScriptRoot\$FileName-$date.csv"
 
-# Only pause in interactive mode
-if ($Interactive -or -not $PSBoundParameters.ContainsKey('GroupNames')) {
-    pause
-}
+pause
