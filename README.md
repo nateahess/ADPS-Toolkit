@@ -1,7 +1,7 @@
 
 # Active Directory PowerShell Toolkit
 
-> A simple set of PowerShell scripts to assist with Active Directory auditing, automations, Identity and Access Management, and more. 
+> A simple set of PowerShell scripts I've found useful to assist with Active Directory auditing, automations, Identity and Access Management, and more. 
 
 
 `All of the scripts in this toolkit are written so they can be ran individually or through the adps.ps1 script`
